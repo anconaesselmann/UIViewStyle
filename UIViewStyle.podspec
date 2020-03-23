@@ -17,4 +17,6 @@ Style views.
   s.watchos.deployment_target = '3.0'
 
   s.source_files = 'UIViewStyle/Classes/**/*'
+
+  s.frameworks = 'UIKit'
 end
