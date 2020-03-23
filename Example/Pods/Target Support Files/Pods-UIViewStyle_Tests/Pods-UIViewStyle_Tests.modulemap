@@ -1,0 +1,6 @@
+framework module Pods_UIViewStyle_Tests {
+  umbrella header "Pods-UIViewStyle_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

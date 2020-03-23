@@ -1,0 +1,16 @@
+PODS:
+  - UIViewStyle (0.1.0)
+
+DEPENDENCIES:
+  - UIViewStyle (from `../`)
+
+EXTERNAL SOURCES:
+  UIViewStyle:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  UIViewStyle: 09501e6bf0870350a9a5817043753dc8398222fe
+
+PODFILE CHECKSUM: d4827e496195a53b6c91088acbcee84c75fbf8e6
+
+COCOAPODS: 1.9.1

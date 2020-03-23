@@ -1,0 +1,6 @@
+framework module UIViewStyle {
+  umbrella header "UIViewStyle-umbrella.h"
+
+  export *
+  module * { export * }
+}

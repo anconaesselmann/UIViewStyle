@@ -1,0 +1,6 @@
+use_frameworks!
+target 'UIViewStyle_Tests' do
+  pod 'UIViewStyle', :path => '../'
+  
+  
+end
