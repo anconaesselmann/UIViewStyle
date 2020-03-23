@@ -14,7 +14,6 @@ Style views.
   s.source           = { :git => 'https://github.com/anconaesselmann/UIViewStyle.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '10.0'
-  s.watchos.deployment_target = '3.0'
 
   s.source_files = 'UIViewStyle/Classes/**/*'
 
