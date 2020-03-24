@@ -52,7 +52,8 @@ public extension UILabel {
 
     @discardableResult
     func centered() -> Self {
-        return self.text(alignment: .center)
+        self.textAlignment = .center
+        return self
     }
 
     @discardableResult

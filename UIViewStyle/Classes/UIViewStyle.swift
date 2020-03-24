@@ -20,6 +20,7 @@ public struct UIViewStyle: Codable {
         case natural
     }
 
+    public var inherited: [String]?
     public var padding: Padding?
     public var textAlignment: TextAlignment?
     public var textColor: Color?
@@ -51,13 +52,39 @@ public struct UIViewStyle: Codable {
         self.isHidden = isHidden
         self.numberOfLines = numberOfLines
     }
+
+    public func combined(with styles: [String: UIViewStyle]?) -> UIViewStyle? {
+        let style = self
+        guard let styles = styles, let inheritedNames = style.inherited else {
+            return nil
+        }
+        var result = UIViewStyle()
+        for inheritedName in inheritedNames {
+            guard let inheritedStyle = styles[inheritedName] else {
+                continue
+            }
+            result = result + inheritedStyle
+        }
+        return result + style
+    }
 }
 
 public func +(lhs: UIViewStyle, rhs: UIViewStyle) -> UIViewStyle {
     var result = UIViewStyle()
-    result.padding?.left = rhs.padding?.left ?? lhs.padding?.left
-    result.padding?.right = rhs.padding?.right ?? lhs.padding?.right
-    result.padding?.top = rhs.padding?.top ?? lhs.padding?.top
+    result.padding = UIViewStyle.Padding()
+
+    if let left = rhs.padding?.left ?? lhs.padding?.left {
+        result.padding?.left = left
+    }
+    if let right = rhs.padding?.right ?? lhs.padding?.right {
+        result.padding?.right = right
+    }
+    if let top = rhs.padding?.top ?? lhs.padding?.top {
+        result.padding?.top = top
+    }
+    if let bottom = rhs.padding?.bottom ?? lhs.padding?.bottom {
+        result.padding?.bottom = bottom
+    }
 
     result.textAlignment = rhs.textAlignment ?? lhs.textAlignment
 
