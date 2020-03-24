@@ -4,7 +4,7 @@
 
 import CoreGraphics
 
-public struct UIViewStyle {
+public struct UIViewStyle: Codable {
     public struct Padding: Codable {
         public var left: CGFloat?
         public var right: CGFloat?
