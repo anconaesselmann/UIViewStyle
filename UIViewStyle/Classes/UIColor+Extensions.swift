@@ -59,7 +59,7 @@ public extension UIColor {
 
     var color: Color {
         let (red, green, blue, alpha) = rgba
-        return Color(red: UInt8(red), green: UInt8(green), blue: UInt8(blue), alpha: alpha )
+        return Color(red: UInt8(red * 255), green: UInt8(green * 255), blue: UInt8(blue * 255), alpha: alpha )
     }
 
 }
