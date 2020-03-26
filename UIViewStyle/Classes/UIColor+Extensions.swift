@@ -4,11 +4,89 @@
 
 import UIKit
 
+public enum RgbColorComponent {
+    case red(UInt8)
+    case green(UInt8)
+    case blue(UInt8)
+    case alpha(CGFloat)
+
+    public init?(_ string: String?) {
+        guard let string = string else {
+            return nil
+        }
+        let components = string.split(separator: ":")
+        guard
+            components.count == 2,
+            let colorString = components.first,
+            let valueString = components.last
+        else {
+            return nil
+        }
+        switch colorString {
+            case "r", "red":
+                guard let value = UInt8(valueString) else {
+                    return nil
+                }
+                self = .red(value)
+            case "g", "green":
+                guard let value = UInt8(valueString) else {
+                    return nil
+                }
+                self = .green(value)
+            case "b", "blue":
+                guard let value = UInt8(valueString) else {
+                    return nil
+                }
+                self = .blue(value)
+            case "a", "alpha":
+                guard let value = Double(valueString) else {
+                    return nil
+                }
+                self = .alpha(CGFloat(value))
+        default:
+            return nil
+        }
+    }
+}
+
 public struct Color: Codable {
-    public let red: UInt8
-    public let green: UInt8
-    public let blue: UInt8
-    public let alpha: CGFloat?
+    public var red: UInt8
+    public var green: UInt8
+    public var blue: UInt8
+    public var alpha: CGFloat?
+
+    public init(red: UInt8 = 0, green: UInt8 = 0, blue: UInt8 = 0, alpha: CGFloat? = 1) {
+        self.red = red
+        self.green = green
+        self.blue = blue
+        self.alpha = alpha
+    }
+
+    /// Example: "r:168,g:33,b:22,a:0.5"
+    public init(rgbString: String) {
+        let components: [RgbColorComponent] = rgbString
+            .split(separator: ",")
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .compactMap { RgbColorComponent($0) }
+        var color = Color()
+        for compoent in components {
+            color.update(component: compoent)
+        }
+        self = color
+    }
+
+    public mutating func update(component: RgbColorComponent) {
+        switch component {
+        case .red(let red):
+            self.red = red
+        case .green(let green):
+            self.green = green
+        case .blue(let blue):
+            self.blue = blue
+        case .alpha(let alpha):
+            self.alpha = alpha
+        }
+    }
 
     public var uiColor: UIColor {
         UIColor(red: red, green: green, blue: blue, alpha: alpha ?? 1)
