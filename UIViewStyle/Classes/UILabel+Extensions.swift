@@ -6,6 +6,11 @@ import UIKit
 
 public extension UILabel {
 
+    convenience init(style: UIViewStyle) {
+        self.init()
+        apply(labelStyle: style)
+    }
+
     @discardableResult
     func apply(labelStyle style: UIViewStyle) -> Self {
         super.apply(style)
@@ -17,6 +22,9 @@ public extension UILabel {
         }
         if let numberOfLines = style.numberOfLines {
             self.numberOfLines(numberOfLines)
+        }
+        if let fontSize = style.fontSize {
+            self.font(size: fontSize)
         }
         return self
     }
@@ -47,6 +55,17 @@ public extension UILabel {
     @discardableResult
     func text(alignment: NSTextAlignment) -> Self {
         self.textAlignment = textAlignment
+        return self
+    }
+
+    @discardableResult
+    func font(size: UIViewStyle.FontSize) -> Self {
+        switch size {
+        case .default:
+            font = font.withSize(17)
+        case .detail:
+            font = font.withSize(12)
+        }
         return self
     }
 

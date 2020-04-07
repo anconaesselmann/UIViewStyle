@@ -13,6 +13,9 @@ public extension UIButton {
         if let color = style.textColor {
             text(color: color)
         }
+        if let fontSize = style.fontSize {
+            self.font(size: fontSize)
+        }
         return self
     }
 
@@ -39,6 +42,12 @@ public extension UIButton {
     @discardableResult
     func text(color: UIColor) -> Self {
         setTitleColor(color, for: .normal)
+        return self
+    }
+
+    @discardableResult
+    func font(size: UIViewStyle.FontSize) -> Self {
+        titleLabel?.font(size: size)
         return self
     }
 

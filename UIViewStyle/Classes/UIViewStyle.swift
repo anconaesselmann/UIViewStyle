@@ -10,6 +10,17 @@ public struct UIViewStyle: Codable {
         public var right: CGFloat?
         public var top: CGFloat?
         public var bottom: CGFloat?
+
+        public init(left: CGFloat? = nil, right: CGFloat? = nil, top: CGFloat? = nil, bottom: CGFloat? = nil) {
+            self.left = left
+            self.right = right
+            self.top = top
+            self.bottom = bottom
+        }
+
+        public init(_ padding: CGFloat) {
+            self.init(left: padding, right: padding, top: padding, bottom: padding)
+        }
     }
 
     public enum TextAlignment: String, Codable {
@@ -20,10 +31,16 @@ public struct UIViewStyle: Codable {
         case natural
     }
 
+    public enum FontSize: String, Codable {
+        case `default`
+        case detail
+    }
+
     public var inherited: [String]?
     public var padding: Padding?
     public var textAlignment: TextAlignment?
     public var textColor: Color?
+    public var fontSize: FontSize?
     public var backgroundColor: Color?
     public var cornerRadius: CGFloat?
     public var borderWidth: CGFloat?
@@ -35,6 +52,7 @@ public struct UIViewStyle: Codable {
         padding: Padding? = nil,
         textAlignment: TextAlignment? = nil,
         textColor: Color? = nil,
+        fontSize: FontSize? = nil,
         backgroundColor: Color? = nil,
         cornerRadius: CGFloat? = nil,
         borderWidth: CGFloat? = nil,
@@ -45,6 +63,7 @@ public struct UIViewStyle: Codable {
         self.padding = padding
         self.textAlignment = textAlignment
         self.textColor = textColor
+        self.fontSize = fontSize
         self.backgroundColor = backgroundColor
         self.cornerRadius = cornerRadius
         self.borderWidth = borderWidth
@@ -90,6 +109,7 @@ public func +(lhs: UIViewStyle, rhs: UIViewStyle) -> UIViewStyle {
 
     result.textColor = rhs.textColor ?? lhs.textColor
     result.backgroundColor = rhs.backgroundColor ?? lhs.backgroundColor
+    result.fontSize = rhs.fontSize ?? lhs.fontSize
     result.cornerRadius = rhs.cornerRadius ?? lhs.cornerRadius
     result.borderWidth = rhs.borderWidth ?? lhs.borderWidth
     result.borderColor = rhs.borderColor ?? lhs.borderColor
