@@ -13,6 +13,12 @@ public extension UIButton {
         if let color = style.textColor {
             text(color: color)
         }
+        if let fontStyle = style.fontStyle {
+            self.font(style: fontStyle)
+        }
+        if let fontTraits = style.fontTrait {
+            self.font(traits: fontTraits)
+        }
         if let fontSize = style.fontSize {
             self.font(size: fontSize)
         }
@@ -46,8 +52,20 @@ public extension UIButton {
     }
 
     @discardableResult
-    func font(size: UIViewStyle.FontSize) -> Self {
+    func font(size: CGFloat) -> Self {
         titleLabel?.font(size: size)
+        return self
+    }
+
+    @discardableResult
+    func font(traits: UIViewStyle.FontTrait) -> Self {
+        titleLabel?.font(traits: traits)
+        return self
+    }
+
+    @discardableResult
+    func font(style: UIViewStyle.FontStyle) -> Self {
+        titleLabel?.font(style: style)
         return self
     }
 

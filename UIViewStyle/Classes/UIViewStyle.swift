@@ -31,16 +31,39 @@ public struct UIViewStyle: Codable {
         case natural
     }
 
-    public enum FontSize: String, Codable {
-        case `default`
-        case detail
+    public enum FontTrait: String, Codable {
+        case italic
+        case bold
+        case expanded
+        case condensed
+        case monoSpace
+        case vertical
+        case uiOptimized
+        case tightLeading
+        case looseLeading
+    }
+
+    public enum FontStyle: String, Codable {
+        case largeTitle
+        case title1
+        case title2
+        case title3
+        case headline
+        case subheadline
+        case body
+        case callout
+        case footnote
+        case caption1
+        case caption2
     }
 
     public var inherited: [String]?
     public var padding: Padding?
     public var textAlignment: TextAlignment?
     public var textColor: Color?
-    public var fontSize: FontSize?
+    public var fontSize: CGFloat?
+    public var fontStyle: FontStyle?
+    public var fontTrait: FontTrait?
     public var backgroundColor: Color?
     public var cornerRadius: CGFloat?
     public var borderWidth: CGFloat?
@@ -52,7 +75,9 @@ public struct UIViewStyle: Codable {
         padding: Padding? = nil,
         textAlignment: TextAlignment? = nil,
         textColor: Color? = nil,
-        fontSize: FontSize? = nil,
+        fontStyle: FontStyle? = nil,
+        fontTrait: FontTrait? = nil,
+        fontSize: CGFloat? = nil,
         backgroundColor: Color? = nil,
         cornerRadius: CGFloat? = nil,
         borderWidth: CGFloat? = nil,
@@ -63,6 +88,8 @@ public struct UIViewStyle: Codable {
         self.padding = padding
         self.textAlignment = textAlignment
         self.textColor = textColor
+        self.fontStyle = fontStyle
+        self.fontTrait = fontTrait
         self.fontSize = fontSize
         self.backgroundColor = backgroundColor
         self.cornerRadius = cornerRadius
@@ -85,6 +112,13 @@ public struct UIViewStyle: Codable {
             result = result + inheritedStyle
         }
         return result + style
+    }
+
+    mutating public func combine(with styles: [String: UIViewStyle]?) {
+        guard let combined = self.combined(with: styles) else {
+            return
+        }
+        self = combined
     }
 }
 
@@ -110,10 +144,123 @@ public func +(lhs: UIViewStyle, rhs: UIViewStyle) -> UIViewStyle {
     result.textColor = rhs.textColor ?? lhs.textColor
     result.backgroundColor = rhs.backgroundColor ?? lhs.backgroundColor
     result.fontSize = rhs.fontSize ?? lhs.fontSize
+    result.fontStyle = rhs.fontStyle ?? lhs.fontStyle
+    result.fontTrait = rhs.fontTrait ?? lhs.fontTrait
     result.cornerRadius = rhs.cornerRadius ?? lhs.cornerRadius
     result.borderWidth = rhs.borderWidth ?? lhs.borderWidth
     result.borderColor = rhs.borderColor ?? lhs.borderColor
     result.isHidden = rhs.isHidden ?? lhs.isHidden
     result.numberOfLines = rhs.numberOfLines ?? lhs.numberOfLines
     return result
+}
+
+extension UIFont {
+    func withTraits(_ traits: UIFontDescriptor.SymbolicTraits) -> UIFont {
+        guard let descriptor = fontDescriptor.withSymbolicTraits(traits) else {
+            return self
+        }
+        return UIFont(descriptor: descriptor, size: 0)
+    }
+
+    func bold() -> UIFont {
+        withTraits(.traitBold)
+    }
+
+    func italic() -> UIFont {
+        withTraits(.traitItalic)
+    }
+}
+
+public extension UIViewStyle.FontStyle {
+    init(uiFontTextStyle: UIFont.TextStyle) {
+        if #available(iOS 11.0, *) {
+            if uiFontTextStyle == .largeTitle {
+                self = .largeTitle
+                return
+            } else {
+                self = .title1
+                return
+            }
+        }
+        switch uiFontTextStyle {
+        case UIFont.TextStyle.title1:
+            self = .title1
+        case UIFont.TextStyle.title2:
+            self = .title2
+        case UIFont.TextStyle.title3:
+            self = .title3
+        case UIFont.TextStyle.headline:
+            self = .headline
+        case UIFont.TextStyle.subheadline:
+            self = .subheadline
+        case UIFont.TextStyle.body:
+            self = .body
+        case UIFont.TextStyle.callout:
+            self = .callout
+        case UIFont.TextStyle.footnote:
+            self = .footnote
+        case UIFont.TextStyle.caption1:
+            self = .caption1
+        case UIFont.TextStyle.caption2:
+            self = .caption2
+        default:
+            self = .body
+        }
+    }
+
+    var uiFontTextStyle: UIFont.TextStyle {
+        switch self {
+        case .largeTitle:
+            if #available(iOS 11.0, *) {
+                return .largeTitle
+            } else {
+                return .title1
+            }
+        case .title1:
+            return .title1
+        case .title2:
+            return .title2
+        case .title3:
+            return .title3
+        case .headline:
+            return .headline
+        case .subheadline:
+            return .subheadline
+        case .body:
+            return .body
+        case .callout:
+            return .callout
+        case .footnote:
+            return .footnote
+        case .caption1:
+            return .caption1
+        case .caption2:
+            return .caption2
+        }
+    }
+}
+
+public extension UIViewStyle.FontTrait {
+    var symbolicTraits: UIFontDescriptor.SymbolicTraits {
+        switch self {
+        case .italic:
+            return .traitItalic
+        case .bold:
+            return .traitBold
+        case .expanded:
+            return .traitExpanded
+        case .condensed:
+            return .traitCondensed
+        case .monoSpace:
+            return .traitMonoSpace
+        case .vertical:
+            return .traitVertical
+        case .uiOptimized:
+            return .traitUIOptimized
+        case .tightLeading:
+            return .traitTightLeading
+        case .looseLeading:
+            return .traitLooseLeading
+        }
+    }
 }

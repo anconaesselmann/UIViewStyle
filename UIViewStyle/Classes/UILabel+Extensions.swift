@@ -23,6 +23,12 @@ public extension UILabel {
         if let numberOfLines = style.numberOfLines {
             self.numberOfLines(numberOfLines)
         }
+        if let fontStyle = style.fontStyle {
+            self.font(style: fontStyle)
+        }
+        if let fontTraits = style.fontTrait {
+            self.font(traits: fontTraits)
+        }
         if let fontSize = style.fontSize {
             self.font(size: fontSize)
         }
@@ -59,13 +65,20 @@ public extension UILabel {
     }
 
     @discardableResult
-    func font(size: UIViewStyle.FontSize) -> Self {
-        switch size {
-        case .default:
-            font = font.withSize(17)
-        case .detail:
-            font = font.withSize(12)
-        }
+    func font(size: CGFloat) -> Self {
+        font = font.withSize(size)
+        return self
+    }
+
+    @discardableResult
+    func font(traits: UIViewStyle.FontTrait) -> Self {
+        font = font.withTraits(traits.symbolicTraits)
+        return self
+    }
+
+    @discardableResult
+    func font(style: UIViewStyle.FontStyle) -> Self {
+        font = UIFont.preferredFont(forTextStyle: style.uiFontTextStyle)
         return self
     }
 
