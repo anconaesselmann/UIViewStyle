@@ -154,7 +154,7 @@ public func +(lhs: UIViewStyle, rhs: UIViewStyle) -> UIViewStyle {
     return result
 }
 
-extension UIFont {
+public extension UIFont {
     func withTraits(_ traits: UIFontDescriptor.SymbolicTraits) -> UIFont {
         guard let descriptor = fontDescriptor.withSymbolicTraits(traits) else {
             return self
