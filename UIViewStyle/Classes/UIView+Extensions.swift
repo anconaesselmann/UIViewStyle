@@ -22,6 +22,19 @@ public extension UIView {
         if style.isHidden ?? false {
             hide()
         }
+        if let shadowColor = style.shadowColor {
+            self.shadow(color: shadowColor)
+        }
+        if let shadowOpacity = style.shadowOpacity {
+            self.shadow(opacity: shadowOpacity)
+        }
+        if let shadowOffset = style.shadowOffset {
+            self.shadow(offset: shadowOffset)
+        }
+        if let shadowRadius = style.shadowRadius {
+            self.shadow(radius: shadowRadius)
+        }
+
         return self
     }
 
@@ -80,6 +93,30 @@ public extension UIView {
     @discardableResult
     func show() -> Self {
         isHidden = false
+        return self
+    }
+
+    @discardableResult
+    func shadow(color: Color) -> Self {
+        layer.shadowColor = color.cgColor
+        return self
+    }
+
+    @discardableResult
+    func shadow(opacity: Float) -> Self {
+        layer.shadowOpacity = opacity
+        return self
+    }
+
+    @discardableResult
+    func shadow(offset: UIViewStyle.Point) -> Self {
+        layer.shadowOffset = CGSize(width: offset.x, height: offset.y)
+        return self
+    }
+
+    @discardableResult
+    func shadow(radius: CGFloat) -> Self {
+        layer.shadowRadius = radius
         return self
     }
 }

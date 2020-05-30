@@ -57,6 +57,11 @@ public struct UIViewStyle: Codable {
         case caption2
     }
 
+    public struct Point: Codable {
+        public var x: CGFloat
+        public var y: CGFloat
+    }
+
     public var inherited: [String]?
     public var padding: Padding?
     public var textAlignment: TextAlignment?
@@ -70,6 +75,10 @@ public struct UIViewStyle: Codable {
     public var borderColor: Color?
     public var isHidden: Bool?
     public var numberOfLines: Int?
+    public var shadowColor: Color?
+    public var shadowOpacity: Float?
+    public var shadowOffset: Point?
+    public var shadowRadius: CGFloat?
 
     public init(
         padding: Padding? = nil,
@@ -83,7 +92,11 @@ public struct UIViewStyle: Codable {
         borderWidth: CGFloat? = nil,
         borderColor: Color? = nil,
         isHidden: Bool? = nil,
-        numberOfLines: Int? = nil
+        numberOfLines: Int? = nil,
+        shadowColor: Color? = nil,
+        shadowOpacity: Float? = nil,
+        shadowOffset: Point? = nil,
+        shadowRadius: CGFloat? = nil
     ) {
         self.padding = padding
         self.textAlignment = textAlignment
@@ -97,6 +110,10 @@ public struct UIViewStyle: Codable {
         self.borderColor = borderColor
         self.isHidden = isHidden
         self.numberOfLines = numberOfLines
+        self.shadowColor = shadowColor
+        self.shadowOpacity = shadowOpacity
+        self.shadowOffset = shadowOffset
+        self.shadowRadius = shadowRadius
     }
 
     public func combined(with styles: [String: UIViewStyle]?) -> UIViewStyle? {
@@ -151,6 +168,10 @@ public func +(lhs: UIViewStyle, rhs: UIViewStyle) -> UIViewStyle {
     result.borderColor = rhs.borderColor ?? lhs.borderColor
     result.isHidden = rhs.isHidden ?? lhs.isHidden
     result.numberOfLines = rhs.numberOfLines ?? lhs.numberOfLines
+    result.shadowColor = rhs.shadowColor ?? lhs.shadowColor
+    result.shadowOpacity = rhs.shadowOpacity ?? lhs.shadowOpacity
+    result.shadowOffset = rhs.shadowOffset ?? lhs.shadowOffset
+    result.shadowRadius = rhs.shadowRadius ?? lhs.shadowRadius
     return result
 }
 
