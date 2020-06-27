@@ -60,7 +60,7 @@ public extension UILabel {
 
     @discardableResult
     func text(alignment: NSTextAlignment) -> Self {
-        self.textAlignment = textAlignment
+        self.textAlignment = alignment
         return self
     }
 
