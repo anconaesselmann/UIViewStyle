@@ -124,6 +124,14 @@ public extension UIColor {
         )
     }
 
+    convenience init(_ red: UInt8, _ green: UInt8, _ blue: UInt8) {
+        self.init(red: red, green: green, blue: blue)
+    }
+
+    static func rgb(_ red: UInt8, _ green: UInt8, _ blue: UInt8) -> UIColor {
+        UIColor(red, green, blue)
+    }
+
     // taken from https://www.hackingwithswift.com/example-code/uicolor/how-to-read-the-red-green-blue-and-alpha-color-components-from-a-uicolor
     var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
         var red: CGFloat = 0

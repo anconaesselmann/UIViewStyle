@@ -6,9 +6,9 @@ import UIKit
 
 public extension UILabel {
 
-    convenience init(style: UIViewStyle) {
+    convenience init(labelStyle: UIViewStyle) {
         self.init()
-        apply(labelStyle: style)
+        apply(labelStyle: labelStyle)
     }
 
     @discardableResult

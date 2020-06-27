@@ -6,6 +6,11 @@ import UIKit
 
 public extension UIButton {
 
+    convenience init(buttonStyle: UIViewStyle) {
+        self.init()
+        apply(buttonStyle: buttonStyle)
+    }
+
     @discardableResult
     func apply(buttonStyle style: UIViewStyle) -> Self {
         super.apply(style)

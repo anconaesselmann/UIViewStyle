@@ -5,6 +5,12 @@
 import UIKit
 
 public extension UIView {
+
+    convenience init(viewStyle: UIViewStyle) {
+        self.init()
+        apply(viewStyle)
+    }
+
     @discardableResult
     func apply(_ style: UIViewStyle) -> Self {
         if let color = style.backgroundColor {
@@ -21,6 +27,9 @@ public extension UIView {
         }
         if style.isHidden ?? false {
             hide()
+        }
+        if let clipsToBounds = style.clipsToBounds {
+            self.clipsToBounds(clipsToBounds)
         }
         if let shadowColor = style.shadowColor {
             self.shadow(color: shadowColor)
@@ -117,6 +126,24 @@ public extension UIView {
     @discardableResult
     func shadow(radius: CGFloat) -> Self {
         layer.shadowRadius = radius
+        return self
+    }
+
+    @discardableResult
+    func cornerRadius(fromViewSize size: CGFloat) -> Self {
+        layer.cornerRadius = size / 2.0
+        return self
+    }
+
+    @discardableResult
+    func cornerRadius(fromViewSize size: Double) -> Self {
+        layer.cornerRadius = CGFloat(size) / 2.0
+        return self
+    }
+
+    @discardableResult
+    func clipsToBounds(_ clipsToBounds: Bool = true) -> Self {
+        self.clipsToBounds = clipsToBounds
         return self
     }
 }

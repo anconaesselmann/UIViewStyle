@@ -60,6 +60,15 @@ public struct UIViewStyle: Codable {
     public struct Point: Codable {
         public var x: CGFloat
         public var y: CGFloat
+
+        public init(x: CGFloat = 0, y: CGFloat = 0) {
+            self.x = x
+            self.y = y
+        }
+
+        public init(_ value: CGFloat) {
+            self.init(x: value, y: value)
+        }
     }
 
     public var inherited: [String]?
@@ -74,6 +83,7 @@ public struct UIViewStyle: Codable {
     public var borderWidth: CGFloat?
     public var borderColor: Color?
     public var isHidden: Bool?
+    public var clipsToBounds: Bool?
     public var numberOfLines: Int?
     public var shadowColor: Color?
     public var shadowOpacity: Float?
@@ -92,6 +102,7 @@ public struct UIViewStyle: Codable {
         borderWidth: CGFloat? = nil,
         borderColor: Color? = nil,
         isHidden: Bool? = nil,
+        clipsToBounds: Bool? = nil,
         numberOfLines: Int? = nil,
         shadowColor: Color? = nil,
         shadowOpacity: Float? = nil,
@@ -109,6 +120,7 @@ public struct UIViewStyle: Codable {
         self.borderWidth = borderWidth
         self.borderColor = borderColor
         self.isHidden = isHidden
+        self.clipsToBounds = clipsToBounds
         self.numberOfLines = numberOfLines
         self.shadowColor = shadowColor
         self.shadowOpacity = shadowOpacity
@@ -167,6 +179,7 @@ public func +(lhs: UIViewStyle, rhs: UIViewStyle) -> UIViewStyle {
     result.borderWidth = rhs.borderWidth ?? lhs.borderWidth
     result.borderColor = rhs.borderColor ?? lhs.borderColor
     result.isHidden = rhs.isHidden ?? lhs.isHidden
+    result.clipsToBounds = rhs.clipsToBounds ?? lhs.clipsToBounds
     result.numberOfLines = rhs.numberOfLines ?? lhs.numberOfLines
     result.shadowColor = rhs.shadowColor ?? lhs.shadowColor
     result.shadowOpacity = rhs.shadowOpacity ?? lhs.shadowOpacity
