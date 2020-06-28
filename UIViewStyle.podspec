@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'UIViewStyle'
-  s.version          = '0.1.12'
+  s.version          = '0.1.13'
   s.summary          = 'Style views'
   s.swift_version    = '5.0'
 

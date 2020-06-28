@@ -27,6 +27,8 @@ public extension UIButton {
         if let fontSize = style.fontSize {
             self.font(size: fontSize)
         }
+        
+        titleLabel?.apply(onlyLabelStyle: style)
         return self
     }
 

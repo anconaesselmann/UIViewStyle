@@ -14,6 +14,11 @@ public extension UILabel {
     @discardableResult
     func apply(labelStyle style: UIViewStyle) -> Self {
         super.apply(style)
+        return apply(onlyLabelStyle: style)
+    }
+
+    @discardableResult
+    func apply(onlyLabelStyle style: UIViewStyle) -> Self {
         if let color = style.textColor {
             text(color: color)
         }
