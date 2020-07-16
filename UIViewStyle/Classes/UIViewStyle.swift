@@ -57,6 +57,19 @@ public struct UIViewStyle: Codable {
         case caption2
     }
 
+    public struct Font: Codable {
+        public let name: String
+        public let size: CGFloat
+        public var uiFont: UIFont? {
+            return UIFont(name: name, size: size)
+        }
+
+        public init?(name: String, size: CGFloat) {
+            self.name = name
+            self.size = size
+        }
+    }
+
     public struct Point: Codable {
         public var x: CGFloat
         public var y: CGFloat
@@ -78,6 +91,7 @@ public struct UIViewStyle: Codable {
     public var fontSize: CGFloat?
     public var fontStyle: FontStyle?
     public var fontTrait: FontTrait?
+    public var font: Font?
     public var backgroundColor: Color?
     public var cornerRadius: CGFloat?
     public var borderWidth: CGFloat?
@@ -97,6 +111,7 @@ public struct UIViewStyle: Codable {
         fontStyle: FontStyle? = nil,
         fontTrait: FontTrait? = nil,
         fontSize: CGFloat? = nil,
+        font: Font? = nil,
         backgroundColor: Color? = nil,
         cornerRadius: CGFloat? = nil,
         borderWidth: CGFloat? = nil,
@@ -115,6 +130,7 @@ public struct UIViewStyle: Codable {
         self.fontStyle = fontStyle
         self.fontTrait = fontTrait
         self.fontSize = fontSize
+        self.font = font
         self.backgroundColor = backgroundColor
         self.cornerRadius = cornerRadius
         self.borderWidth = borderWidth
@@ -172,6 +188,7 @@ public func +(lhs: UIViewStyle, rhs: UIViewStyle) -> UIViewStyle {
 
     result.textColor = rhs.textColor ?? lhs.textColor
     result.backgroundColor = rhs.backgroundColor ?? lhs.backgroundColor
+    result.font = rhs.font ?? lhs.font
     result.fontSize = rhs.fontSize ?? lhs.fontSize
     result.fontStyle = rhs.fontStyle ?? lhs.fontStyle
     result.fontTrait = rhs.fontTrait ?? lhs.fontTrait

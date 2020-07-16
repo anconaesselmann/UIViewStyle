@@ -50,6 +50,19 @@ public enum RgbColorComponent {
 }
 
 public struct Color: Codable {
+
+    enum Error: Swift.Error {
+        case notAHexString
+    }
+
+    enum Keys: String, CodingKey {
+        case red
+        case green
+        case blue
+        case alpha
+        case hex
+    }
+
     public var red: UInt8
     public var green: UInt8
     public var blue: UInt8
@@ -61,6 +74,34 @@ public struct Color: Codable {
         self.blue = blue
         self.alpha = alpha
     }
+
+    public init?(hexString: String) {
+        guard let (r, g, b, a) = UIColor.hexStringToCgFloat(hexString) else {
+            return nil
+        }
+        self.init(red: UInt8(r), green: UInt8(g), blue: UInt8(b), alpha: a)
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: Keys.self)
+        if let hexString = try? container.decode(String.self, forKey: .hex) {
+            (self.red, self.green, self.blue, self.alpha) = try Self.hexToRgb(hexString)
+        } else {
+            self.red   = try  container.decode(UInt8.self,   forKey: .red)
+            self.green = try  container.decode(UInt8.self,   forKey: .green)
+            self.blue  = try  container.decode(UInt8.self,   forKey: .blue)
+            self.alpha = try? container.decode(CGFloat.self, forKey: .alpha)
+        }
+    }
+
+    private static func hexToRgb(_ hexString: String) throws -> (UInt8, UInt8, UInt8, CGFloat) {
+        guard let (r, g, b, a) = UIColor.hexStringToUInt8(hexString) else {
+            throw Error.notAHexString
+        }
+        return (r, g, b, a)
+    }
+
+    public func encode(to encoder: Encoder) throws { fatalError("Not yet implemented") }
 
     /// Example: "r:168,g:33,b:22,a:0.5"
     public init(rgbString: String) {
@@ -126,6 +167,44 @@ public extension UIColor {
 
     convenience init(_ red: UInt8, _ green: UInt8, _ blue: UInt8) {
         self.init(red: red, green: green, blue: blue)
+    }
+
+    convenience init?(hexString: String) {
+        guard let (r, g, b, a) = Self.hexStringToCgFloat(hexString) else {
+            return nil
+        }
+        self.init(red: r, green: g, blue: b, alpha: a)
+    }
+
+    static func hexStringToCgFloat(_ hexString: String) -> (CGFloat, CGFloat, CGFloat, CGFloat)? {
+        guard let (r, g, b, a) = Self.hexStringToUInt8(hexString) else {
+            return nil
+        }
+        return (CGFloat(r / 255), CGFloat(g / 255), CGFloat(b / 255), a)
+    }
+
+    static func hexStringToUInt8(_ hexString: String) -> (UInt8, UInt8, UInt8, CGFloat)? {
+        guard hexString.hasPrefix("#") else {
+            return nil
+        }
+        let start = hexString.index(hexString.startIndex, offsetBy: 1)
+        let hexColor = String(hexString[start...])
+        guard hexColor.count == 8 else {
+            return nil
+        }
+        let r, g, b: UInt8
+        let a: CGFloat
+        let scanner = Scanner(string: hexColor)
+        var hexNumber: UInt64 = 0
+
+        guard scanner.scanHexInt64(&hexNumber) else {
+            return nil
+        }
+        r = UInt8((hexNumber & 0xff000000) >> 24)
+        g = UInt8((hexNumber & 0x00ff0000) >> 16)
+        b = UInt8((hexNumber & 0x0000ff00) >> 8)
+        a = CGFloat(hexNumber & 0x000000ff) / 255
+        return (r, g, b, a)
     }
 
     static func rgb(_ red: UInt8, _ green: UInt8, _ blue: UInt8) -> UIColor {

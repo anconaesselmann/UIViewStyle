@@ -37,6 +37,9 @@ public extension UILabel {
         if let fontSize = style.fontSize {
             self.font(size: fontSize)
         }
+        if let font = style.font?.uiFont {
+            self.font = font
+        }
         return self
     }
 
